@@ -1,0 +1,37 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity read_decoder is
+port ( i_r_ADDR   : in  std_logic_vector(1 downto 0);
+       i_r_EN     : in  std_logic; 
+       i_Q0       : in  std_logic_vector(7 downto 0);   
+       i_Q1       : in  std_logic_vector(7 downto 0);
+       i_Q2       : in  std_logic_vector(7 downto 0);
+       i_Q3       : in  std_logic_vector(7 downto 0);
+       o_r_DATA   : out std_logic_vector(7 downto 0));
+  end read_decoder;
+
+architecture arch_1 of read_decoder is 
+  begin 
+  process (i_r_ADDR, i_r_EN, i_Q0, i_Q1, i_Q2, i_Q3)   
+  begin     
+    if (i_r_EN='1') then  
+      if(i_r_ADDR ="00") then
+         o_r_DATA <= i_Q0;
+        
+      elsif(i_r_ADDR="01") then
+        o_r_DATA <= i_Q1;
+        
+      elsif(i_r_ADDR="10") then
+        o_r_DATA <= i_Q2;
+        
+      elsif(i_r_ADDR="11") then
+        o_r_DATA <= i_Q3;       
+    end if; 
+     else
+        o_r_DATA <= (others=>'0');
+     end if;
+    end process;
+     
+ 
+end arch_1;
