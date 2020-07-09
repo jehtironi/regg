@@ -1,0 +1,21 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity reg4 is
+port ( i_D3       : in  std_logic;  -- clear/reset
+       i_w_DATA   : in  std_logic_vector(7 downto 0);  -- data input         
+       o_Q3       : out std_logic_vector(7 downto 0)); -- data output
+end reg4;
+
+
+architecture arch_1 of reg4 is
+begin
+  process(i_D3, i_w_DATA) 
+  begin
+    if (i_D3='1') then
+      o_Q3 <= i_w_DATA;
+          else
+      o_Q3 <= (others=>'0');
+    end if;
+  end process;
+end arch_1;
