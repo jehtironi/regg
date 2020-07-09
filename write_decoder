@@ -1,0 +1,52 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity write_decoder is
+port ( i_w_ADDR   : in  std_logic_vector(1 downto 0);
+       i_w_EN     : in  std_logic; 
+       o_D0       : out std_logic;   
+       o_D1       : out std_logic;
+       o_D2       : out std_logic;
+       o_D3       : out std_logic);
+  
+end write_decoder;
+
+architecture arch_1 of write_decoder is 
+  begin 
+  process (i_w_ADDR, i_w_EN)   
+  begin     
+    if (i_w_EN='1') then  
+      if(i_w_ADDR ="00") then
+        o_D0 <= '1';
+        o_D1 <= '0';
+        o_D2 <= '0';
+        o_D3 <='0';
+        
+      elsif(i_w_ADDR="01") then
+        o_D0 <= '0';
+        o_D1 <= '1';
+        o_D2 <= '0';
+        o_D3 <= '0';
+        
+      elsif(i_w_ADDR="10") then
+        o_D0 <= '0';
+        o_D1 <= '0';
+        o_D2 <= '1';
+        o_D3 <= '0';
+        
+      elsif(i_w_ADDR="11") then
+        o_D0 <= '0';
+        o_D1 <= '0';
+        o_D2 <= '0';
+        o_D3 <= '1';         
+    end if; 
+     else
+        o_D0 <= '0';
+        o_D1 <= '0';
+        o_D2 <= '0';
+        o_D3 <= '0';
+     end if;
+    end process;
+     
+ 
+end arch_1;
