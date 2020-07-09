@@ -1,0 +1,93 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity bloco is
+port ( i_w_EN     : in  std_logic; 
+       i_r_EN     : in  std_logic; 
+       i_w_ADDR   : in  std_logic_vector(1 downto 0);
+       i_r_ADDR   : in  std_logic_vector(1 downto 0);
+       i_w_DATA   : in  std_logic_vector(7 downto 0); 
+       o_r_DATA   : out std_logic_vector(7 downto 0));
+end bloco;
+
+architecture arch_1 of bloco is 
+  
+  component write_decoder is
+  port( i_w_ADDR   : in  std_logic_vector(1 downto 0);
+        i_w_EN     : in  std_logic; 
+        o_D0       : out std_logic;   
+        o_D1       : out std_logic;
+        o_D2       : out std_logic;
+        o_D3       : out std_logic);
+end component;
+
+  component reg1 is
+  port(i_D0       : in  std_logic;  -- clear/reset
+       i_w_DATA   : in  std_logic_vector(7 downto 0);  -- data input         
+       o_Q0       : out std_logic_vector(7 downto 0)); -- data output
+end component;
+
+  component reg2 is
+  port(i_D1       : in  std_logic;  -- clear/reset
+       i_w_DATA   : in  std_logic_vector(7 downto 0);  -- data input         
+       o_Q1       : out std_logic_vector(7 downto 0)); -- data output
+end component;
+
+  component reg3 is
+  port(i_D2       : in  std_logic;  -- clear/reset
+       i_w_DATA   : in  std_logic_vector(7 downto 0);  -- data input         
+       o_Q2       : out std_logic_vector(7 downto 0)); -- data output
+end component;
+
+  component reg4 is
+  port(i_D3       : in  std_logic;  -- clear/reset
+       i_w_DATA   : in  std_logic_vector(7 downto 0);  -- data input         
+       o_Q3       : out std_logic_vector(7 downto 0)); -- data output
+end component;
+
+ component read_decoder is
+  port( i_r_ADDR   : in  std_logic_vector(1 downto 0);
+        i_r_EN     : in  std_logic; 
+        i_Q0       : in  std_logic_vector(7 downto 0);   
+        i_Q1       : in  std_logic_vector(7 downto 0);
+        i_Q2       : in  std_logic_vector(7 downto 0);
+        i_Q3       : in  std_logic_vector(7 downto 0);
+        o_r_DATA   : out std_logic_vector(7 downto 0));
+end component;
+
+
+signal w_D0, w_D1, w_D2, w_D3: std_logic;
+signal w_Q0, w_Q1, w_Q2, w_Q3: std_logic_vector(7 downto 0);
+begin
+u_0: write_decoder port map (i_w_ADDR   => i_w_ADDR,
+                             i_w_EN    => i_w_EN,
+                             o_D0    => w_D0,
+                             o_D1    => w_D1,
+                             o_D2    => w_D2,
+                             o_D3    => w_D3);
+                        
+u_1: reg1 port map (i_D0 => w_D0,
+                    i_w_DATA => i_w_DATA,
+                    o_Q0 =>w_Q0);
+                    
+u_2: reg2 port map (i_D1 => w_D1,
+                    i_w_DATA => i_w_DATA,
+                    o_Q1 =>w_Q1);
+                    
+u_3: reg3 port map (i_D2 => w_D2,
+                    i_w_DATA => i_w_DATA,
+                    o_Q2 =>w_Q2);
+                    
+u_4: reg4 port map (i_D3 => w_D3,
+                    i_w_DATA => i_w_DATA,
+                    o_Q3 =>w_Q3); 
+                    
+u_5: read_decoder port map ( i_r_ADDR   => i_r_ADDR,
+                             i_r_EN    => i_r_EN,
+                             i_Q0    => w_Q0,
+                             i_Q1    => w_Q1,
+                             i_Q2    => w_Q2,
+                             i_Q3    => w_Q3,
+                             o_r_DATA => o_r_DATA);
+                    
+end arch_1; 
